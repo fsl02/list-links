@@ -1,9 +1,10 @@
 
+import ListLinks from "./components/ListLinks";
+import './App.css';
+
 function App() {
   return (
-    <div>
-      Meu app react
-    </div>
+    <ListLinks />
   )
 }
 
