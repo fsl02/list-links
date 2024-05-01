@@ -8,6 +8,7 @@ import {
 import App from './App.jsx'
 import Login from './pages/Login';
 import CreateLink from './pages/CreateLink/index.jsx';
+import AdminUi from './pages/AdminUi/index.jsx';
 
 
 export default createBrowserRouter(
@@ -18,7 +19,7 @@ export default createBrowserRouter(
             <Route path="/admin">
                 <Route path="" element={<h1>Dashboard</h1>}/>
                 <Route path="create-link" element={<CreateLink />} />
-                <Route path="ui" element={<h1>Ui</h1>} />
+                <Route path="ui" element={<AdminUi />} />
             </Route>
         </>
     )
