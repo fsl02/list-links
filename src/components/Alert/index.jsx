@@ -1,11 +1,11 @@
 import { useState } from "react"
 
 
-export default function Alert({ showAlertState }) {
+export default function Alert({ showAlertState, status, children }) {
 
     return (
-        <div className={showAlertState.showAlert ? "alert alert-success d-block" : "d-none" }  role="alert">
-            A simple success alert—check it out!
+        <div className={showAlertState ? `alert alert-${status} d-block` : "d-none" }  role="alert">
+            { children }
         </div>
     )
 }

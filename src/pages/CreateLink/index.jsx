@@ -2,13 +2,15 @@
 import Layout from "../Layout"
 import storage from "../../storage"
 import { useState } from "react"
-
+import Form from '../../components/Form'
 
 export default function CreateLink() {
 
     const [linkText, setLinkText] = useState();
     const [linkUrl, setLinkUrl] = useState();
     const [showAlert, setShowAlert] = useState(false);
+    const [alertMsg, setAlertMsg] = useState('');
+    const [alertStatus, setAlertStatus] = useState('info');
 
     const submitHandle = (event) => {
         event.preventDefault();
@@ -17,16 +19,18 @@ export default function CreateLink() {
         storage.setLinks(links);
         event.target.reset();
         setShowAlert(true);
+        setAlertMsg("Link cadastrado com sucesso!");
+        setAlertStatus('success');
         
         setTimeout(() => {
             setShowAlert(false);
-        }, 2000)
+        }, 2000);
     }
 
     return (
        <>
-       <Layout title="Create link" showAlertState={{showAlert, setShowAlert}}>
-        <form action="" onSubmit={submitHandle}>
+       <Layout title="Create link">
+        <Form submitHandle={submitHandle} showAlert={showAlert} alertMsg={alertMsg} alertStatus={alertStatus}>
             <div className="mb-3">
                 <label htmlFor="link-text" className="form-label">Texto do link</label>
                 <input type="text" className="form-control" id="link-text" onChange={event => setLinkText(event.target.value) } />
@@ -38,7 +42,7 @@ export default function CreateLink() {
             <div className="mb-3">
                 <button className="btn btn-dark w-25">Criar link</button>
             </div>
-        </form>
+        </Form>
        </Layout>
        </> 
 
