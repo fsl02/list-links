@@ -1,13 +1,14 @@
 
 import Alert from "../Alert";
+import { AlertData } from "../../context/FormContext";
 
-export default function Form({ children, submitHandle, showAlert, alertMsg, alertStatus }) {
+export default function Form({ children, submitHandle, alertState }) {
     return (
         <form onSubmit={submitHandle}>
-            <Alert showAlertState={showAlert} status={ alertStatus }>
-                { alertMsg }
-            </Alert>
-            { children }
+            <AlertData.Provider value={alertState}>
+                <Alert />
+                { children }
+            </AlertData.Provider>
         </form>
     )
 }

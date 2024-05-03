@@ -1,16 +1,17 @@
 
 import Layout from "../Layout"
 import storage from "../../storage"
-import { useState } from "react"
+import { useContext, useState, contex } from "react"
 import Form from '../../components/Form'
+import { AlertData } from "../../context/FormContext"
 
 export default function CreateLink() {
 
+    const alertData = useContext(AlertData);
+
     const [linkText, setLinkText] = useState();
     const [linkUrl, setLinkUrl] = useState();
-    const [showAlert, setShowAlert] = useState(false);
-    const [alertMsg, setAlertMsg] = useState('');
-    const [alertStatus, setAlertStatus] = useState('info');
+    const [alertState, setAlertState] = useState(alertData);
 
     const submitHandle = (event) => {
         event.preventDefault();
@@ -18,31 +19,34 @@ export default function CreateLink() {
         links.push({linkText, linkUrl});
         storage.setLinks(links);
         event.target.reset();
-        setShowAlert(true);
-        setAlertMsg("Link cadastrado com sucesso!");
-        setAlertStatus('success');
+
+        setAlertState({
+            show: true, 
+            msg: "Link cadastrado com sucesso!",
+            status: "success"
+        });
         
         setTimeout(() => {
-            setShowAlert(false);
+            setAlertState({show: false});
         }, 2000);
     }
 
     return (
        <>
        <Layout title="Create link">
-        <Form submitHandle={submitHandle} showAlert={showAlert} alertMsg={alertMsg} alertStatus={alertStatus}>
-            <div className="mb-3">
-                <label htmlFor="link-text" className="form-label">Texto do link</label>
-                <input type="text" className="form-control" id="link-text" onChange={event => setLinkText(event.target.value) } />
-            </div>
-            <div className="mb-3">
-                <label htmlFor="link-url" className="form-label">URL do link</label>
-                <input type="text" className="form-control" id="link-url" onChange={ event => setLinkUrl(event.target.value) } />
-            </div>
-            <div className="mb-3">
-                <button className="btn btn-dark w-25">Criar link</button>
-            </div>
-        </Form>
+            <Form submitHandle={submitHandle} alertState={alertState}>
+                <div className="mb-3">
+                    <label htmlFor="link-text" className="form-label">Texto do link</label>
+                    <input type="text" className="form-control" id="link-text" onChange={event => setLinkText(event.target.value) } />
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="link-url" className="form-label">URL do link</label>
+                    <input type="text" className="form-control" id="link-url" onChange={ event => setLinkUrl(event.target.value) } />
+                </div>
+                <div className="mb-3">
+                    <button className="btn btn-dark w-25">Criar link</button>
+                </div>
+            </Form>
        </Layout>
        </> 
 
