@@ -10,6 +10,7 @@ import Login from './pages/Login';
 import CreateLink from './pages/CreateLink/index.jsx';
 import AdminUi from './pages/AdminUi/index.jsx';
 import { useState } from 'react';
+import Dashboard from './pages/Dashboard/index.jsx';
 
 export default createBrowserRouter(
     createRoutesFromElements(
@@ -17,9 +18,9 @@ export default createBrowserRouter(
             <Route path="/links" element={<LinksPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/admin">
-                <Route path="" element={<h1>Dashboard</h1>}/>
-                <Route path="create-link" element={<CreateLink />} />
-                <Route path="ui" element={<AdminUi />} />
+                <Route path="" element={<Dashboard />}></Route>
+                <Route path="create-link" element={<CreateLink />}></Route>
+                <Route path="ui" element={<AdminUi />}></Route>
             </Route>
         </>
     )
