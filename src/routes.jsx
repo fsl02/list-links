@@ -5,7 +5,7 @@ import {
     Route
 } from 'react-router-dom';
 
-import App from './App.jsx'
+import LinksPage from './pages/LinksPage'
 import Login from './pages/Login';
 import CreateLink from './pages/CreateLink/index.jsx';
 import AdminUi from './pages/AdminUi/index.jsx';
@@ -14,7 +14,7 @@ import { useState } from 'react';
 export default createBrowserRouter(
     createRoutesFromElements(
         <>
-            <Route path="/links" element={<App />} />
+            <Route path="/links" element={<LinksPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/admin">
                 <Route path="" element={<h1>Dashboard</h1>}/>

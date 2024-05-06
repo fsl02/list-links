@@ -1,8 +1,8 @@
 
-export default function LinkItem({link, label}) {
+export default function LinkItem({linkText, linkUrl}) {
     return (
         <li>
-            <a className="link-item" href={link}>{label}</a>
+            <a className="link-item" href={linkUrl}>{linkText}</a>
         </li>
     )
 }

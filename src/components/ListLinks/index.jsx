@@ -1,11 +1,9 @@
 
 import LinkItem from "../LinkItem";
+import storage from "../../storage";
 
-const links = [
-    {label: "Texto exibido no link", link: "https://google.com"},
-    {label: "Texto exibido no link", link: "https://google.com"},
-    {label: "Texto exibido no link", link: "https://google.com"},
-]
+const links = storage.getLinks();
+
 
 export default function ListLinks() {
     return (
