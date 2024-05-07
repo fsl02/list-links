@@ -2,6 +2,7 @@
     list-style: none;
     max-width: 600px;
     margin: auto;
+    padding: 20px;
   }
   
   .link-item {
@@ -18,4 +19,12 @@
   
   .link-item:hover {
     text-decoration: underline;
+  }
+
+  .theme-dark .link-item {
+    background-color: #fff;
+  }
+
+  .theme-dark {
+    background-color: #000;
   }
