@@ -11,13 +11,21 @@ export default {
         return this.setItem('links', links);
     },
 
+    setUiStyle(uiStyle) {
+        return this.setItem('ui-style', uiStyle);
+    },
+
+    getUiStyle() {
+        return this.getItem('ui-style');
+    },
+
     setItem(key, value) {
         
         if(typeof value === 'object') {
             value = JSON.stringify(value);
         }
 
-        window.localStorage.setItem(key, value);
+        return window.localStorage.setItem(key, value);
     },
 
     getItem(key) {
