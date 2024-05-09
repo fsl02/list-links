@@ -1,11 +1,25 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import storage from "../../storage"
+import { UiThemeContext } from "../../context/FormContext";
+import './LinkItem.css';
 
 export default function LinkItem({linkText, linkUrl}) {
-    let linkStyle = storage.getUiStyle();
-    let linkStyleHover = storage.getUiStyleHover()
+    let {uiStyle, setUiStyle, styleHover} = useContext(UiThemeContext);
 
-    const [style, setStyle] = useState(linkStyle);
+    console.log({uiStyle, setUiStyle, styleHover})
+
+    let linkStyle = storage.getUiStyle();
+    let linkStyleHover = storage.getUiStyleHover();
+    let [style, setStyle] = useState(linkStyle);
+    
+    if(uiStyle && setUiStyle && styleHover) {
+        linkStyle = uiStyle;
+        style = uiStyle;
+        setStyle = setUiStyle; 
+        linkStyleHover = styleHover;
+    }
+
+    console.log(style);
 
     return (
         <li>

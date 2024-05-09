@@ -15,7 +15,7 @@ import Dashboard from './pages/Dashboard/index.jsx';
 export default createBrowserRouter(
     createRoutesFromElements(
         <>
-            <Route path="/links" element={<LinksPage />} />
+            <Route path="/:username" element={<LinksPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/admin">
                 <Route path="" element={<Dashboard />}></Route>

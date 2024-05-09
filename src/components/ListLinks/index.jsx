@@ -1,11 +1,10 @@
 
 import LinkItem from "../LinkItem";
 import storage from "../../storage";
+import './ListLinks.css';
 
-const links = storage.getLinks();
-
-
-export default function ListLinks() {
+export default function ListLinks({ links }) {
+    links = links ?? storage.getLinks()
     return (
         <ul className="list-links">
             { links.map((item, index) => (<LinkItem key={index} {...item} />) ) }

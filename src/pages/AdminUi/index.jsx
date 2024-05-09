@@ -3,6 +3,9 @@ import Form from "../../components/Form";
 import Layout from "../Layout";
 import storage from "../../storage";
 import FormSection from "../../components/FormSection";
+import LinkItem from "../../components/LinkItem";
+import ListLinks from "../../components/ListLinks";
+import { UiThemeProvider } from "../../context/FormContext";
 
 export default function AdminUi() {
 
@@ -24,20 +27,14 @@ export default function AdminUi() {
         backgroundColor: savedUiStyleHover.backgroundColor
     });
 
+    const [uiStyle, setUiStyle] = useState({
+        fontSize: `${fontSize}px`,
+    });
+
     const submitHandle = (event) => {
         event.preventDefault();
 
         storage.setUiStyleHover(styleHover)
-
-        let uiStyle = {
-            color,
-            textAlign,
-            fontSize: `${fontSize}px`,
-            backgroundColor,
-            borderColor,
-            borderWidth: `${borderWidth}px`,
-            borderRadius: `${borderRadius}px`
-        }
 
         storage.setUiStyle(uiStyle);
 
@@ -55,67 +52,78 @@ export default function AdminUi() {
 
     return (
         <Layout title="User interface">
-            <Form submitHandle={submitHandle} alertState={alert}>
-                <FormSection title="Texto e cor de fundo"> 
-                    <div className="col">
-                        <label className="form-label">Cor</label>
-                        <input type="color" value={color} className="form-control form-control-color w-100" onChange={event => setColor(event.target.value)} />
-                    </div>
-                    <div className="col">
-                        <label className="form-label">Cor de fundo</label>
-                        <input type="color" value={backgroundColor} className="form-control form-control-color w-100" onChange={event => setBackgroundColor(event.target.value)} />
-                    </div>
-                    <div className="col">
-                        <label className="form-label">Alinhamento</label>
-                        <select className="form-select" value={textAlign} onChange={event => setTextAlign(event.target.value)}>
-                            <option>left</option>
-                            <option>center</option>
-                            <option>right</option>
-                        </select>
-                    </div>
-                    <div className="col">
-                        <label className="form-label">Tamanho ({fontSize}px)</label>
-                        <input className="form-range" value={fontSize} type="range" min="12" max="32" step="1" onChange={event => setFontSize(event.target.value)} />
-                    </div>
-                </FormSection>
-                <FormSection title="Borda"> 
-                    <div className="col">
-                        <label className="form-label">Cor</label>
-                        <input type="color" value={borderColor} className="form-control form-control-color w-100" onChange={event => setBorderColor(event.target.value)} />
-                    </div>
-                    <div className="col">
-                        <label className="form-label">Tamanho ({borderWidth}px)</label>
-                        <input className="form-range" value={borderWidth} type="range" min="0" max="5" step="1" onChange={event => setBorderWidth(event.target.value)} />
-                    </div>
-                    <div className="col">
-                        <label className="form-label">Arredondamento ({borderRadius}px)</label>
-                        <input className="form-range" value={borderRadius} type="range" min="0" max="100" step="1" onChange={event => setBorderRadius(event.target.value)} />
-                    </div>
-                </FormSection>
-                <FormSection title="Hover"> 
-                    <div className="col">
-                        <label className="form-label">Cor do texto</label>
-                        <input type="color" value={styleHover.color} 
-                            onChange={event => setStyleHover({...styleHover, color: event.target.value})}
-                            className="form-control form-control-color w-100" />
-                    </div>
-                    <div className="col">
-                        <label className="form-label">Cor de fundo</label>
-                        <input type="color" value={styleHover.backgroundColor} 
-                            onChange={event => setStyleHover({...styleHover, backgroundColor: event.target.value})}
-                            className="form-control form-control-color w-100" />
-                    </div>
-                    <div className="col">
-                        <label className="form-label">Cor da borda</label>
-                        <input type="color" value={styleHover.borderColor} 
-                            onChange={event => setStyleHover({...styleHover, borderColor: event.target.value})}
-                            className="form-control form-control-color w-100" />
-                    </div>
-                </FormSection>
+            <UiThemeProvider uiStyleData={{uiStyle, setUiStyle, styleHover}}>
                 <div className="row">
-                    <button className="btn btn-dark">Salvar</button>
+
+                    <Form submitHandle={submitHandle} alertState={alert} className="col-7">
+                        <FormSection title="Texto e cor de fundo"> 
+                            <div className="col">
+                                <label className="form-label">Cor</label>
+                                <input type="color" value={color} className="form-control form-control-color w-100" onChange={event => setColor(event.target.value)} />
+                            </div>
+                            <div className="col">
+                                <label className="form-label">Cor de fundo</label>
+                                <input type="color" value={uiStyle.backgroundColor} className="form-control form-control-color w-100" onChange={event => setUiStyle({...uiStyle, backgroundColor: event.target.value})} />
+                            </div>
+                            <div className="col">
+                                <label className="form-label">Alinhamento</label>
+                                <select className="form-select" value={textAlign} onChange={event => setTextAlign(event.target.value)}>
+                                    <option>left</option>
+                                    <option>center</option>
+                                    <option>right</option>
+                                </select>
+                            </div>
+                            <div className="col">
+                                <label className="form-label">Tamanho ({fontSize}px)</label>
+                                {/*<input className="form-range" value={fontSize} type="range" min="12" max="32" step="1" onChange={event => setFontSize(event.target.value)} />*/}
+                                <input className="form-range" value={parseFloat(uiStyle.fontSize)} type="range" min="12" max="32" step="1" onChange={event => setUiStyle({...uiStyle, fontSize: `${event.target.value}px`})} />
+                            </div>
+                        </FormSection>
+                        <FormSection title="Borda"> 
+                            <div className="col">
+                                <label className="form-label">Cor</label>
+                                <input type="color" value={borderColor} className="form-control form-control-color w-100" onChange={event => setBorderColor(event.target.value)} />
+                            </div>
+                            <div className="col">
+                                <label className="form-label">Tamanho ({borderWidth}px)</label>
+                                <input className="form-range" value={borderWidth} type="range" min="0" max="5" step="1" onChange={event => setBorderWidth(event.target.value)} />
+                            </div>
+                            <div className="col">
+                                <label className="form-label">Arredondamento ({borderRadius}px)</label>
+                                <input className="form-range" value={borderRadius} type="range" min="0" max="100" step="1" onChange={event => setBorderRadius(event.target.value)} />
+                            </div>
+                        </FormSection>
+                        <FormSection title="Hover"> 
+                            <div className="col">
+                                <label className="form-label">Cor do texto</label>
+                                <input type="color" value={styleHover.color} 
+                                    onChange={event => setStyleHover({...styleHover, color: event.target.value})}
+                                    className="form-control form-control-color w-100" />
+                            </div>
+                            <div className="col">
+                                <label className="form-label">Cor de fundo</label>
+                                <input type="color" value={styleHover.backgroundColor} 
+                                    onChange={event => setStyleHover({...styleHover, backgroundColor: event.target.value})}
+                                    className="form-control form-control-color w-100" />
+                            </div>
+                            <div className="col">
+                                <label className="form-label">Cor da borda</label>
+                                <input type="color" value={styleHover.borderColor} 
+                                    onChange={event => setStyleHover({...styleHover, borderColor: event.target.value})}
+                                    className="form-control form-control-color w-100" />
+                            </div>
+                        </FormSection>
+                        <div className="row">
+                            <button className="btn btn-dark">Salvar</button>
+                        </div>
+                    </Form>
+                
+                    <div className="col-5">
+                        <ListLinks />
+                    </div>
                 </div>
-            </Form>
+            </UiThemeProvider>
+
         </Layout>
     )
 }
