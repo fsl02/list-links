@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Form from "../../components/Form";
 import Layout from "../Layout";
 import storage from "../../storage";
@@ -12,14 +12,17 @@ export default function AdminUi() {
     let savedUiStyle = storage.getUiStyle();
     let savedUiStyleHover = storage.getUiStyleHover();
 
-    const [color, setColor] = useState(savedUiStyle.color ?? '#123456');
-    const [textAlign, setTextAlign] = useState(savedUiStyle.textAlign ?? 'center');
-    const [fontSize, setFontSize] = useState(parseFloat(savedUiStyle.fontSize ?? 16));
-    const [backgroundColor, setBackgroundColor] = useState(savedUiStyle.backgroundColor ?? '#ffffff');
-    const [borderColor, setBorderColor] = useState(savedUiStyle.borderColor ?? '#000000');
-    const [borderWidth, setBorderWidth] = useState(parseFloat(savedUiStyle.borderWidth ?? 0));
-    const [borderRadius, setBorderRadius] = useState(parseFloat(savedUiStyle.borderRadius ?? 0));
     const [alert, setAlert] = useState();
+
+    const [uiStyle, setUiStyle] = useState({
+        color: savedUiStyle.color ?? '#123456',
+        textAlign: savedUiStyle.textAlign ?? 'center',
+        fontSize: `${savedUiStyle.fontSize ?? '16px'}`,
+        backgroundColor: savedUiStyle.backgroundColor ?? '#ffffff',
+        borderColor: savedUiStyle.borderColor ?? '#000000',
+        borderWidth: savedUiStyle.borderWidth ?? 0,
+        borderRadius: savedUiStyle.borderRadius ?? 0
+    });
 
     const [styleHover, setStyleHover] = useState({
         color: savedUiStyleHover.color,
@@ -27,9 +30,12 @@ export default function AdminUi() {
         backgroundColor: savedUiStyleHover.backgroundColor
     });
 
-    const [uiStyle, setUiStyle] = useState({
-        fontSize: `${fontSize}px`,
-    });
+    const [uiStyleLive, setUiStyleLive] = useState(uiStyle);
+
+    useEffect(() => {
+        setUiStyleLive(uiStyle);
+    }, [uiStyle])
+
 
     const submitHandle = (event) => {
         event.preventDefault();
@@ -52,45 +58,58 @@ export default function AdminUi() {
 
     return (
         <Layout title="User interface">
-            <UiThemeProvider uiStyleData={{uiStyle, setUiStyle, styleHover}}>
+            <UiThemeProvider uiStyleData={{uiStyleLive, styleHover}}>
                 <div className="row">
 
                     <Form submitHandle={submitHandle} alertState={alert} className="col-7">
                         <FormSection title="Texto e cor de fundo"> 
                             <div className="col">
                                 <label className="form-label">Cor</label>
-                                <input type="color" value={color} className="form-control form-control-color w-100" onChange={event => setColor(event.target.value)} />
+                                <input type="color" value={uiStyle.color} 
+                                    className="form-control form-control-color w-100" 
+                                    onChange={event => setUiStyle({...uiStyle, color: event.target.value})} />
                             </div>
                             <div className="col">
                                 <label className="form-label">Cor de fundo</label>
-                                <input type="color" value={uiStyle.backgroundColor} className="form-control form-control-color w-100" onChange={event => setUiStyle({...uiStyle, backgroundColor: event.target.value})} />
+                                <input type="color" value={uiStyle.backgroundColor} 
+                                    className="form-control form-control-color w-100" 
+                                    onChange={event => setUiStyle({...uiStyle, backgroundColor: event.target.value})} />
                             </div>
                             <div className="col">
                                 <label className="form-label">Alinhamento</label>
-                                <select className="form-select" value={textAlign} onChange={event => setTextAlign(event.target.value)}>
+                                <select className="form-select" value={uiStyle.textAlign} 
+                                    onChange={event => setUiStyle({...uiStyle, textAlign: event.target.value})}>
                                     <option>left</option>
                                     <option>center</option>
                                     <option>right</option>
                                 </select>
                             </div>
                             <div className="col">
-                                <label className="form-label">Tamanho ({fontSize}px)</label>
+                                <label className="form-label">Tamanho ({uiStyle.fontSize})</label>
                                 {/*<input className="form-range" value={fontSize} type="range" min="12" max="32" step="1" onChange={event => setFontSize(event.target.value)} />*/}
-                                <input className="form-range" value={parseFloat(uiStyle.fontSize)} type="range" min="12" max="32" step="1" onChange={event => setUiStyle({...uiStyle, fontSize: `${event.target.value}px`})} />
+                                <input className="form-range" value={parseFloat(uiStyle.fontSize)} 
+                                    type="range" min="12" max="32" step="1" 
+                                    onChange={event => setUiStyle({...uiStyle, fontSize: `${event.target.value}px`})} />
                             </div>
                         </FormSection>
                         <FormSection title="Borda"> 
                             <div className="col">
                                 <label className="form-label">Cor</label>
-                                <input type="color" value={borderColor} className="form-control form-control-color w-100" onChange={event => setBorderColor(event.target.value)} />
+                                <input type="color" value={uiStyle.borderColor} 
+                                    className="form-control form-control-color w-100" 
+                                    onChange={event => setUiStyle({...uiStyle, borderColor: event.target.value})} />
                             </div>
                             <div className="col">
-                                <label className="form-label">Tamanho ({borderWidth}px)</label>
-                                <input className="form-range" value={borderWidth} type="range" min="0" max="5" step="1" onChange={event => setBorderWidth(event.target.value)} />
+                                <label className="form-label">Tamanho ({uiStyle.borderWidth})</label>
+                                <input className="form-range" value={parseFloat(uiStyle.borderWidth)} 
+                                    type="range" min="0" max="5" step="1" 
+                                    onChange={event => setUiStyle({...uiStyle, borderWidth: `${event.target.value}px`})} />
                             </div>
                             <div className="col">
-                                <label className="form-label">Arredondamento ({borderRadius}px)</label>
-                                <input className="form-range" value={borderRadius} type="range" min="0" max="100" step="1" onChange={event => setBorderRadius(event.target.value)} />
+                                <label className="form-label">Arredondamento ({uiStyle.borderRadius})</label>
+                                <input className="form-range" value={parseFloat(uiStyle.borderRadius)} 
+                                    type="range" min="0" max="100" step="1" 
+                                    onChange={event => setUiStyle({...uiStyle, borderRadius: `${event.target.value}px`})} />
                             </div>
                         </FormSection>
                         <FormSection title="Hover"> 
@@ -118,8 +137,9 @@ export default function AdminUi() {
                         </div>
                     </Form>
                 
-                    <div className="col-5">
-                        <ListLinks />
+                    <div className="col-5 mt-4 border h-25 text-center ">
+                        <h5>Preview</h5>
+                        <ListLinks links={[{linkText: "Botão de exemplo"}]} />
                     </div>
                 </div>
             </UiThemeProvider>
