@@ -7,16 +7,18 @@ import {
 
 import LinksPage from './pages/LinksPage'
 import Login from './pages/Login';
-import CreateLink from './pages/CreateLink/index.jsx';
-import AdminUi from './pages/AdminUi/index.jsx';
+import CreateLink from './pages/CreateLink';
+import AdminUi from './pages/AdminUi';
 import { useState } from 'react';
-import Dashboard from './pages/Dashboard/index.jsx';
-import AdminListing from './pages/AdminListing/index.jsx';
-import EditLink from './pages/EditLink/index.jsx';
+import Dashboard from './pages/Dashboard';
+import AdminListing from './pages/AdminListing';
+import EditLink from './pages/EditLink';
+import HomePage from './pages/HomePage';
 
 export default createBrowserRouter(
     createRoutesFromElements(
         <>
+            <Route path="/" element={<HomePage />} />
             <Route path="/:username" element={<LinksPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/admin">
