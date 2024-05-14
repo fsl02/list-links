@@ -3,7 +3,7 @@ import storage from "../../storage"
 import { UiThemeContext } from "../../context/FormContext";
 import './LinkItem.css';
 
-export default function LinkItem({linkText, linkUrl}) {
+export default function LinkItem({linkText, linkUrl, index}) {
     let {uiStyleLive, styleHover} = useContext(UiThemeContext);
 
     let linkStyle = storage.getUiStyle() ?? uiStyleLive;
@@ -27,9 +27,22 @@ export default function LinkItem({linkText, linkUrl}) {
         setStyle(currentStyle);
     }
 
+    const handleAccessCount = (event) => {
+        let accessCount = storage.getAccessCount();
+
+        if(accessCount[index]) {
+            accessCount[index]++;
+            storage.setAccessCount(accessCount);
+            return;
+        }
+
+        accessCount[index] = 1;
+        storage.setAccessCount(accessCount);
+    }
+
     return (
         <li>
-            <a className="link-item" 
+            <a onClick={handleAccessCount} className="link-item" 
             href={linkUrl} 
             onMouseOver={setStyleLive}
             onMouseLeave={setStyleHoverLive}

@@ -7,8 +7,19 @@ export default {
         return this.getItem('links');
     },
 
+    getLink(key) {
+        let allLinks = this.getLinks();
+        return allLinks[key];
+    },
+
     setLinks(links) {
         return this.setItem('links', links);
+    },
+
+    setLink(key, value) {
+        let allLinks = this.getLinks();
+        allLinks[parseInt(key)] = value;
+        this.setLinks(allLinks);
     },
 
     setUiStyle(uiStyle) {
@@ -25,6 +36,14 @@ export default {
 
     getUiStyleHover() {
         return this.getItem('ui-style-hover');
+    },
+
+    getAccessCount() {
+        return this.getItem('access-count');
+    },
+
+    setAccessCount(accessCount) {
+        return this.setItem('access-count', accessCount);
     },
 
     setItem(key, value) {
