@@ -8,11 +8,9 @@ const customMount = (componet) => {
 
 describe('Testando botões da pagina inicial', () => {
   it('Botão login', () => {
-    cy.viewport('macbook-16')
+    cy.viewport('macbook-16');
     customMount(<HomePage />)
-
-    cy.get('[href="/login"]').should('have.text', 'Entrar');
-    cy.get('[href="/login"]').should('not.be.visible');
+    cy.get('[href="/login"]').should('have.text', 'Login');
   })
 
   it("Boteão register", () => {

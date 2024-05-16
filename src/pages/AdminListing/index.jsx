@@ -9,7 +9,7 @@ export default function AdminListing() {
     return (
         <Layout title="Listagem de links">
             <table className="table table-striped">
-                <thead>
+            <thead data-testid="table-head">
                     <tr>
                         <th>ID</th>
                         <th>Texto do link</th>
