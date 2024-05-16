@@ -5,6 +5,8 @@ export default function FormLogin() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+
+        console.log(event);
     }
     return (
         <form className="w-25 m-auto" onSubmit={handleSubmit}>
@@ -12,6 +14,9 @@ export default function FormLogin() {
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
                     <input type="email" className="form-control" id="email" placeholder="name@example.com" />
+                    <div className="input-error">
+                        Error
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Senha</label>
