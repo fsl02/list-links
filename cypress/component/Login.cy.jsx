@@ -24,11 +24,12 @@ describe('Testando formulário de login', () => {
   })
 
   it("Deve exibir mensagens de error para campos obrigatorios", () => {
+    cy.viewport('macbook-16');
     customMount(<Login />)
     cy.get('form button').click();
 
     cy.get('[type="email"]')
       .parent()
       .find('.input-error');
-  })
+  });
 })
