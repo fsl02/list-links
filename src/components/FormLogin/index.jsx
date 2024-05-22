@@ -28,7 +28,7 @@ export default function FormLogin() {
                 email: {message: 'Este campo precisa ser preenchido', showError: true}
             }));
         }
-        
+
         if(!password) {
             setError(valorAnterior => ({
                 ...valorAnterior, 
@@ -39,7 +39,7 @@ export default function FormLogin() {
         if(password.length > 0 && password.length <= 3) {
             setError(valorAnterior => ({
                 ...valorAnterior, 
-                password: {message: "Este campo deve ter no minimo 4 caracteres ", showError: true}
+                password: {message: "Este campo deve ter no minimo 4 caracteres", showError: true}
             }));
         }
     }
