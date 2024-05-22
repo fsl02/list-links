@@ -19,8 +19,11 @@ export default function FormLogin() {
         }
     })
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const showErrors = () => {
+        setError({
+            email: { showError: false },
+            password: { showError: false }
+        });
 
         if(!email) {
             setError(valorAnterior => ({
@@ -43,6 +46,12 @@ export default function FormLogin() {
             }));
         }
     }
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        showErrors();
+    }
+
     return (
         <form className="w-25 m-auto" onSubmit={handleSubmit}>
             <FormSection title="Login">
@@ -53,7 +62,7 @@ export default function FormLogin() {
                         className="form-control"  
                         placeholder="name@example.com"
                         onChange={event => setEmail(event.target.value)}
-                        onBlur={() => setError({...error, email: {...error.email, showError: false}})} />
+                        onBlur={showErrors} />
                     <FieldError visible={error.email.showError}>
                         {error.email.message}
                     </FieldError>
@@ -65,7 +74,7 @@ export default function FormLogin() {
                         className="form-control"  
                         placeholder="name@example.com"
                         onChange={event => setPassword(event.target.value)} 
-                        onBlur={() => setError({...error, password: {...error.password, showError: false}})} />
+                        onBlur={showErrors} />
                     <FieldError visible={error.password.showError}>
                         {error.password.message}
                     </FieldError>
