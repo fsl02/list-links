@@ -15,7 +15,7 @@ describe('Formulário de cadastro', () => {
             "Digite seu nome",
             "Digite seu sobrenome",
             "Digite sua senha",
-            "Digite a senha novamente"
+            "Digite sua senha novamente"
         ];
 
         const label = [
@@ -61,8 +61,8 @@ describe('Formulário de cadastro', () => {
             .should('have.text', 'Criar Conta')
         
         cy.get('a')
-            .should('have.attr', 'href')
-            .and('have.text', 'Ja tenho conta')
+            .should('have.text', 'Ja tenho conta')
+            .and('have.attr', 'href')
             .and('include', '/login')
     })
 
@@ -82,21 +82,26 @@ describe('Formulário de cadastro', () => {
     it("Campo nome e sobrenome devem ter no minimo 3 caracteres", () => {
         customMount(<Register />)
 
-        cy.get('input#user-name').type('Jó');
-        cy.get('input#user-lastname').type('Jó');
+        cy.get('#user-name').type('Jó');
+        cy.get('#user-lastname').type('Jó');
+        cy.get('#user-email').type('teste@mail.com');
+        cy.get('#user-password').type('123456');
+        cy.get('#user-confirm-password').type('123456');
         cy.get('button[type="submit"]').click();
 
         cy.get('.invalid-feedback.d-block')
             .should('have.length', 2)
             .each((element, index) => {
                 cy.wrap(element)
-                    .should('have.text', 'Este campo é precisa ter no minimo 3 caracteres')
+                    .should('have.text', 'Este precisar ter no minimo 3 caracteres')
             })
     })
 
     it("Exbir mensagem de erro quand as senhas não estiverem identicas", () => {
         customMount(<Register />)
-
+        cy.get('#user-name').type('Ana');
+        cy.get('#user-lastname').type('Ana');
+        cy.get('#user-email').type('teste@mail.com');
         cy.get('input#user-password').type('123456');
         cy.get('input#user-confirm-password').type('654321');
         cy.get('button[type="submit"]').click();

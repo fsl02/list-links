@@ -13,6 +13,7 @@ import Dashboard from './pages/Dashboard';
 import AdminListing from './pages/AdminListing';
 import EditLink from './pages/EditLink';
 import HomePage from './pages/HomePage';
+import Register from './pages/Register';
 
 export default createBrowserRouter(
     createRoutesFromElements(
@@ -20,6 +21,7 @@ export default createBrowserRouter(
             <Route path="/" element={<HomePage />} />
             <Route path="/:username" element={<LinksPage />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             <Route path="/admin">
                 <Route path="" element={<Dashboard />}></Route>
                 <Route path="create-link" element={<CreateLink />}></Route>

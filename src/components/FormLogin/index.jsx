@@ -26,14 +26,14 @@ export default function FormLogin() {
         });
 
         if(!email) {
-            setError(valorAnterior => ({
+            return setError(valorAnterior => ({
                 ...valorAnterior, 
                 email: {message: 'Este campo precisa ser preenchido', showError: true}
             }));
         }
 
         if(!password) {
-            setError(valorAnterior => ({
+            return setError(valorAnterior => ({
                 ...valorAnterior, 
                 password: {message: "Este campo precisa ser preenchido", showError: true}
             }));
