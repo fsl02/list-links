@@ -2,81 +2,43 @@ import { Link } from "react-router-dom";
 import FormSection from "../FormSection";
 import { useState } from "react";
 import FieldError from "../FieldError";
+import { useForm } from '../../context/FormValidationContext'
 
 export default function FormLogin() {
-
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
-    const [error, setError] = useState({
-        email: {
-            showError: false,
-            message: "Este campo precisa ser preenchido"
-        },
-        password: {
-            showError: false,
-            message: "Este campo precisa ser preenchido"
-        }
-    })
-
-    const showErrors = () => {
-        setError({
-            email: { showError: false },
-            password: { showError: false }
-        });
-
-        if(!email) {
-            return setError(valorAnterior => ({
-                ...valorAnterior, 
-                email: {message: 'Este campo precisa ser preenchido', showError: true}
-            }));
-        }
-
-        if(!password) {
-            return setError(valorAnterior => ({
-                ...valorAnterior, 
-                password: {message: "Este campo precisa ser preenchido", showError: true}
-            }));
-        }
-
-        if(password.length > 0 && password.length <= 3) {
-            setError(valorAnterior => ({
-                ...valorAnterior, 
-                password: {message: "Este campo deve ter no minimo 4 caracteres", showError: true}
-            }));
-        }
-    }
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        showErrors();
-    }
+    let {
+        handleErrors, 
+        handleChange, 
+        errors, 
+        formValues
+    } = useForm();
 
     return (
-        <form className="w-25 m-auto" onSubmit={handleSubmit}>
+        <>
             <FormSection title="Login">
                 <div className="mb-3">
                     <label htmlFor="email" className="form-label">Email</label>
                     <input type="email" 
                         id="email" 
+                        name="user-email"
                         className="form-control"  
                         placeholder="name@example.com"
-                        onChange={event => setEmail(event.target.value)}
-                        onBlur={showErrors} />
-                    <FieldError visible={error.email.showError}>
-                        {error.email.message}
+                        onChange={event => handleChange(event)}
+                        onBlur={event => handleErrors(event, {required: true, validEmail: true})} />
+                    <FieldError visible={errors['user-email'] ?? false}>
+                        {errors['user-email'] ?? ''}
                     </FieldError>
                 </div>
                 <div className="mb-3">
                     <label htmlFor="password" className="form-label">Senha</label>
                     <input type="password" 
                         id="password"
+                        name="user-password"
                         className="form-control"  
                         placeholder="name@example.com"
-                        onChange={event => setPassword(event.target.value)} 
-                        onBlur={showErrors} />
-                    <FieldError visible={error.password.showError}>
-                        {error.password.message}
+                        onChange={event => handleChange(event)}
+                        onBlur={event => handleErrors(event, {required: true, minLength: 6, passwordMatch: ''})} />
+                    <FieldError visible={errors['user-password']}>
+                        {errors['user-password']}
                     </FieldError>
                 </div>
                 <div>
@@ -86,6 +48,6 @@ export default function FormLogin() {
             <div className="text-center">
                 <Link to="/">Esqueci minha senha</Link>
             </div>
-        </form>
+        </>
     )
 }

@@ -14,14 +14,21 @@ import AdminListing from './pages/AdminListing';
 import EditLink from './pages/EditLink';
 import HomePage from './pages/HomePage';
 import Register from './pages/Register';
+import App from './App';
+import { FormValidation } from './context/FormValidationContext';
 
 export default createBrowserRouter(
     createRoutesFromElements(
         <>
             <Route path="/" element={<HomePage />} />
+            <Route path="/teste" element={<App />} />
             <Route path="/:username" element={<LinksPage />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/register" element={
+                <FormValidation>
+                    <Register />
+                </FormValidation>
+            } />
             <Route path="/admin">
                 <Route path="" element={<Dashboard />}></Route>
                 <Route path="create-link" element={<CreateLink />}></Route>

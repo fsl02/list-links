@@ -1,10 +1,12 @@
 
-import ListLinks from "./components/ListLinks";
-import { Link } from "react-router-dom";
-import './App.css';
+import FormTeste from "./components/FormTeste";
+import { Form, useForm } from "./context/FormContext";
+import { FormValidation } from "./context/FormValidationContext";
 
-function App() {
-  return;
+export default function App() {
+  return (
+    <FormValidation onSubmit={function() {}}>
+     <FormTeste />
+    </FormValidation>
+  )
 }
-
-export default App
