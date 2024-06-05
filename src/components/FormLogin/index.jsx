@@ -1,16 +1,27 @@
 import { Link } from "react-router-dom";
 import FormSection from "../FormSection";
-import { useState } from "react";
 import FieldError from "../FieldError";
-import { useForm } from '../../context/FormValidationContext'
+import { useForm } from '../../context/FormValidationContext';
+import { useEffect } from "react";
 
 export default function FormLogin() {
     let {
         handleErrors, 
         handleChange, 
         errors, 
-        formValues
+        formValues,
+        setHandleSubmit
     } = useForm();
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+    }
+
+    useEffect(() => {
+        setHandleSubmit({
+            execute: handleSubmit
+        });
+    }, []);
 
     return (
         <>

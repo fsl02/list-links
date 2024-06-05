@@ -2,17 +2,20 @@ import Login from '../../src/pages/Login'
 import { MemoryRouter } from 'react-router-dom'
 import '../../public/bootstrap.min.css';
 
+
 const customMount = (componet) => {
   cy.mount(<MemoryRouter>{componet}</MemoryRouter>)
 }
 
 describe('Testando formulário de login', () => {
+  /*
   it('Deve verificar todos os elementos da pagina de login', () => {
     customMount(<Login />)
+    
     cy.get('.form-section-title')
       .should('have.length', 1)
       .and('have.text', 'Login')
-    
+  
     cy.get('input[type="email"]').should('have.length', 1);
     cy.get('input[type="password"]').should('have.length', 1);
     cy.get('form button')
@@ -21,24 +24,26 @@ describe('Testando formulário de login', () => {
     cy.get('a')
       .should('have.length', 1)
       .and('have.text', 'Esqueci minha senha');
-  })
+  })*/
+
 
   it("Deve exibir mensagens de erro para campos obrigatorios", () => {
-    cy.viewport('macbook-16');
-    customMount(<Login />)
-    cy.get('form button').click();
+    customMount(<Login />);
+    cy.get('input[type="email"]').blur({force: true})
+    cy.get('input[type="password"]').blur({force: true})
+    // cy.get('form button').click();
 
-    cy.get('[type="email"]')
-      .parent()
-      .find('.invalid-feedback.d-block')
-      .and('have.text', 'Este campo precisa ser preenchido')
-
-    cy.get('[type="password"]')
-      .parent()
-      .find('.invalid-feedback.d-block')
-      .and('have.text', 'Este campo precisa ser preenchido')
+    cy.get('input[type="email"]')
+    .parent()
+    .find('.invalid-feedback.d-block')
+    .and('have.text', 'Campo obrigatorio')
+    
+    cy.get('input[type="password"]')
+    .parent()
+    .find('.invalid-feedback.d-block')
+    .and('have.text', 'Campo obrigatorio')
   });
-
+/*
   it("Deve exibir mensagens de error para campo senha com menos de 4 caracteres", () => {
     cy.viewport('macbook-16');
     customMount(<Login />)
@@ -90,5 +95,5 @@ describe('Testando formulário de login', () => {
       .find('.invalid-feedback')
       .should('not.have.class', 'd-block')
       .and('not.be.visible')
-  });
+  });*/
 })

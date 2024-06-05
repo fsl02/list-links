@@ -96,8 +96,6 @@ export function FormValidation ({children, className}) {
         }
     }
 
-    console.log(handleSubmit);
-
     return (
         <FormContext.Provider value={{
                 handleErrors, 
