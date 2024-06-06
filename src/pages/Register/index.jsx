@@ -18,7 +18,7 @@ export default function Register () {
             equal: {
                 msg: "Este campo precisa ser igual ao campo :label:",
                 isValid: function (inputValue, {name, label}, formValues) {
-                    if(!formValues[name] || formValues[name] !== inputValue) {
+                    if(inputValue && !formValues[name] || formValues[name] !== inputValue) {
                         this.msg = this.msg.replace(':label:', label)
                         return false;
                     }
