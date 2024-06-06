@@ -1,23 +1,34 @@
 
 import FormSection from "../../components/FormSection"
 import FieldError from "../../components/FieldError"
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "../../context/FormValidationContext";
 
 export default function Register () {
     let {
         handleErrors, 
         handleChange, 
-        errors, 
-        formValues,
-        setHandleSubmit
+        errors,
+        setHandleSubmit,
+        addErrorCode
     } = useForm();
 
     useEffect(() => {
+        addErrorCode({
+            equal: {
+                msg: "Este campo precisa ser igual ao campo :label:",
+                isValid: function (inputValue, {name, label}, formValues) {
+                    if(!formValues[name] || formValues[name] !== inputValue) {
+                        this.msg = this.msg.replace(':label:', label)
+                        return false;
+                    }
+                    return true;
+                }
+            }
+        })
         setHandleSubmit({
             execute: (event) => {
                 event.preventDefault();
-                alert('deu bom');
             }
         })
     }, []);
@@ -78,14 +89,14 @@ export default function Register () {
                     </FieldError>
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="user-password" className="form-label">Senha</label>
+                    <label htmlFor="user-password" className="form-label">Confirmar senha</label>
                     <input type="password" 
                         id="user-confirm-password" 
                         name="user-confirm-password" 
                         className="form-control"  
                         placeholder="Digite a senha novamente" 
                         onChange={event => handleChange(event)}
-                        onBlur={event => handleErrors(event, {required: true, minLength: 6, equal: 'user-password'})} />
+                        onBlur={event => handleErrors(event, {required: true, minLength: 6, equal: {name: 'user-password', label: "Senha"}})} />
                     <FieldError visible={errors['user-confirm-password'] ?? false}>
                         {errors['user-confirm-password'] ?? ''}
                     </FieldError>

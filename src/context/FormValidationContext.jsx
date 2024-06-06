@@ -6,22 +6,20 @@ export const FormContext = createContext({
     errors: {}, 
     formValues: {},
     handleSubmit: {execute: () => {}},
-    setHandleSubmit: () => {}
+    setHandleSubmit: () => {},
+    setErrorCodes: () => {},
 });
 
 export const useForm = () => useContext(FormContext);
 
 export function FormValidation ({children, className}) {
-    const validateEvent = (event, functionName) => {
-        let name = event.target?.name;
-        let value = event.target?.value;
+    const [errors, setErrors] = useState({});
+    const [formValues, setFormValues] = useState({});
+    const [handleSubmit, setHandleSubmit] = useState({
+        execute: () => {}
+    });
 
-        if(!name || typeof value === 'undefined') {
-            throw new Error(`${functionName}() esperava receber um objeto SyntheticBaseEvent como argumento mas recebeu: ${event}`)
-        }
-    } 
-
-    const errorCodes = {    
+    const [errorCodes, setErrorCodes] = useState({  
         required: {
             msg: "Campo obrigatorio",
             isValid: function (inputValue, isRequired) {
@@ -38,13 +36,16 @@ export function FormValidation ({children, className}) {
                 return true;
             }
         }
-    }
-    
-    const [errors, setErrors] = useState({});
-    const [formValues, setFormValues] = useState({});
-    const [handleSubmit, setHandleSubmit] = useState({
-        execute: () => {}
-    });
+    })
+
+    const validateEvent = (event, functionName) => {
+        let name = event.target?.name;
+        let value = event.target?.value;
+
+        if(!name || typeof value === 'undefined') {
+            throw new Error(`${functionName}() esperava receber um objeto SyntheticBaseEvent como argumento mas recebeu: ${event}`)
+        }
+    } 
 
     const handleErrors = (event, errorObj) => {
         validateEvent(event, 'handleErrors')
@@ -66,7 +67,7 @@ export function FormValidation ({children, className}) {
                 msg = errorData.msg;
             }
             
-            if(errorData.isValid && !errorData.isValid(formValues[name], inputErrorCode)) {
+            if(errorData.isValid && !errorData.isValid(formValues[name], inputErrorCode, formValues)) {
                 msg = errorData.msg;
             }
         }
@@ -96,6 +97,13 @@ export function FormValidation ({children, className}) {
         }
     }
 
+    const addErrorCode = (errorObj) => {
+        setErrorCodes({
+            ...errorCodes,
+            ...errorObj
+        })
+    } 
+
     return (
         <FormContext.Provider value={{
                 handleErrors, 
@@ -103,7 +111,8 @@ export function FormValidation ({children, className}) {
                 errors, 
                 formValues, 
                 handleSubmit, 
-                setHandleSubmit
+                setHandleSubmit,
+                addErrorCode
             }}>
             <form className={className} onSubmit={handleSubmit.execute}>
                 { children }
